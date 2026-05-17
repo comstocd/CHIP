@@ -5,90 +5,62 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>CHIP Research Project — Document Repository</title>
 <style>
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-  :root {
-    --navy: #1a2744;
-    --blue: #2563eb;
-    --blue-light: #eff6ff;
-    --teal: #0d9488;
-    --teal-light: #f0fdfa;
-    --amber: #b45309;
-    --amber-bg: #fef3c7;
-    --red: #dc2626;
-    --red-bg: #fef2f2;
-    --slate: #475569;
-    --border: #e2e8f0;
-    --text: #1e293b;
-    --muted: #64748b;
-    --bg: #f8fafc;
-    --white: #ffffff;
-  }
-  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; font-size: 15px; line-height: 1.65; color: var(--text); background: var(--bg); }
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;font-size:15px;line-height:1.65;color:#1e293b;background:#f8fafc}
+a{color:inherit;text-decoration:none}
 
-  /* HEADER */
-  .site-header { background: var(--navy); padding: 0.75rem 1.5rem; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 8px rgba(0,0,0,0.15); }
-  .site-header .brand a { color: #93c5fd; text-decoration: none; font-weight: 700; font-size: 0.95rem; }
-  .site-header a.gh { color: #64748b; text-decoration: none; font-size: 0.8rem; transition: color 0.15s; }
-  .site-header a.gh:hover { color: #fff; }
+header{background:#1a2744;padding:.75rem 1.5rem;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;box-shadow:0 2px 8px rgba(0,0,0,.15)}
+header .brand{color:#93c5fd;font-weight:700;font-size:.95rem}
+header .gh{color:#94a3b8;font-size:.8rem;transition:color .15s}
+header .gh:hover{color:#fff}
 
-  /* HERO */
-  .hero { background: linear-gradient(135deg, var(--navy) 0%, #1e3a5f 100%); color: white; padding: 2.5rem 1.5rem 2rem; }
-  .hero .meta { font-size: 0.78rem; color: #93c5fd; text-transform: uppercase; letter-spacing: 0.08em; font-weight: 600; margin-bottom: 0.75rem; }
-  .hero h1 { font-size: clamp(1.4rem, 4vw, 2rem); font-weight: 700; line-height: 1.2; margin-bottom: 0.75rem; }
-  .hero p { color: #bfdbfe; font-size: 0.9rem; max-width: 680px; margin-bottom: 1.25rem; }
-  .tags { display: flex; flex-wrap: wrap; gap: 0.5rem; }
-  .tag { display: inline-block; padding: 0.2rem 0.65rem; border-radius: 9999px; font-size: 0.72rem; font-weight: 600; }
-  .tag-blue { background: #dbeafe; color: #1d4ed8; }
-  .tag-teal { background: #ccfbf1; color: #0f766e; }
-  .tag-amber { background: var(--amber-bg); color: var(--amber); }
-  .tag-gray { background: #f1f5f9; color: var(--slate); }
+.hero{background:#1a2744;color:#fff;padding:2.5rem 1.5rem 2rem}
+.hero .meta{font-size:.75rem;color:#93c5fd;text-transform:uppercase;letter-spacing:.08em;font-weight:600;margin-bottom:.75rem}
+.hero h1{font-size:1.75rem;font-weight:700;line-height:1.2;margin-bottom:.75rem}
+.hero p{color:#bfdbfe;font-size:.9rem;max-width:680px;margin-bottom:1.25rem}
+.tags{display:flex;flex-wrap:wrap;gap:.5rem}
+.tag{display:inline-block;padding:.2rem .65rem;border-radius:9999px;font-size:.72rem;font-weight:600}
+.t-blue{background:#dbeafe;color:#1d4ed8}
+.t-teal{background:#ccfbf1;color:#0f766e}
+.t-amber{background:#fef3c7;color:#b45309}
+.t-gray{background:#f1f5f9;color:#475569}
+.t-green{background:#dcfce7;color:#166534}
+.t-red{background:#fee2e2;color:#b91c1c}
 
-  /* STATS */
-  .stats-bar { display: flex; gap: 2rem; padding: 1.5rem; flex-wrap: wrap; border-bottom: 1px solid var(--border); background: var(--white); }
-  .stat { text-align: center; }
-  .stat .n { font-size: 2rem; font-weight: 700; color: var(--blue); line-height: 1; }
-  .stat .lbl { font-size: 0.75rem; color: var(--muted); }
+.stats{display:flex;gap:2rem;padding:1.5rem;flex-wrap:wrap;border-bottom:1px solid #e2e8f0;background:#fff}
+.stat .n{font-size:2rem;font-weight:700;color:#2563eb;line-height:1}
+.stat .lbl{font-size:.72rem;color:#64748b}
 
-  /* PAGE */
-  .page-wrap { max-width: 960px; margin: 0 auto; padding: 2rem 1.5rem; }
-  .section-label { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); margin: 2rem 0 0.875rem; border-top: 1px solid var(--border); padding-top: 1rem; font-weight: 600; }
+.wrap{max-width:960px;margin:0 auto;padding:2rem 1.5rem}
+.section-label{font-size:.72rem;text-transform:uppercase;letter-spacing:.08em;color:#64748b;margin:2rem 0 .875rem;border-top:1px solid #e2e8f0;padding-top:1rem;font-weight:600}
 
-  /* DOCUMENT GRID */
-  .doc-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1rem; }
-  .doc-card { background: var(--white); border: 1px solid var(--border); border-radius: 0.625rem; padding: 1.125rem; transition: box-shadow 0.15s, border-color 0.15s; border-top: 3px solid var(--blue); }
-  .doc-card:hover { box-shadow: 0 4px 16px rgba(0,0,0,0.08); border-color: var(--blue); }
-  .doc-card a { text-decoration: none; color: inherit; display: block; }
-  .card-num { font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; color: var(--blue); margin-bottom: 0.375rem; }
-  .card-title { font-size: 0.95rem; font-weight: 700; color: var(--navy); margin-bottom: 0.375rem; line-height: 1.3; }
-  .card-subtitle { font-size: 0.78rem; color: var(--muted); margin-bottom: 0.75rem; line-height: 1.4; }
-  .card-tags { display: flex; flex-wrap: wrap; gap: 0.35rem; }
-  .status { display: inline-block; padding: 0.15rem 0.5rem; border-radius: 4px; font-size: 0.68rem; font-weight: 600; }
-  .status-final { background: #dcfce7; color: #166534; }
-  .status-draft { background: var(--amber-bg); color: var(--amber); }
-  .status-live { background: #dbeafe; color: #1d4ed8; }
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:1rem}
+.card{background:#fff;border:1px solid #e2e8f0;border-top:3px solid #2563eb;border-radius:.625rem;padding:1.125rem;transition:box-shadow .15s}
+.card:hover{box-shadow:0 4px 16px rgba(0,0,0,.08)}
+.card .num{font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:#2563eb;margin-bottom:.375rem}
+.card .title{font-size:.95rem;font-weight:700;color:#1a2744;margin-bottom:.375rem;line-height:1.3}
+.card .sub{font-size:.78rem;color:#64748b;margin-bottom:.75rem;line-height:1.4}
+.card .ctags{display:flex;flex-wrap:wrap;gap:.35rem}
+.status{display:inline-block;padding:.15rem .5rem;border-radius:4px;font-size:.68rem;font-weight:600}
 
-  /* DESIGN TABLE */
-  .info-table { width: 100%; border-collapse: collapse; font-size: 0.875rem; background: var(--white); border-radius: 0.5rem; overflow: hidden; border: 1px solid var(--border); margin-bottom: 1.25rem; }
-  .info-table th { background: var(--navy); color: white; padding: 0.6rem 1rem; text-align: left; font-size: 0.78rem; font-weight: 600; }
-  .info-table td { padding: 0.5rem 1rem; border-bottom: 1px solid var(--border); vertical-align: top; }
-  .info-table tr:last-child td { border-bottom: none; }
-  .info-table tr:nth-child(even) td { background: var(--bg); }
-  .info-table code { font-family: monospace; font-size: 0.82rem; background: var(--bg); padding: 0.1rem 0.3rem; border-radius: 3px; }
+.tbl{width:100%;border-collapse:collapse;font-size:.875rem;background:#fff;border-radius:.5rem;overflow:hidden;border:1px solid #e2e8f0;margin-bottom:1.25rem}
+.tbl th{background:#1a2744;color:#fff;padding:.6rem 1rem;text-align:left;font-size:.78rem;font-weight:600}
+.tbl td{padding:.5rem 1rem;border-bottom:1px solid #e2e8f0;vertical-align:top}
+.tbl tr:last-child td{border-bottom:none}
+.tbl tr:nth-child(even) td{background:#f8fafc}
 
-  /* CALLOUT */
-  .callout { border-radius: 0.5rem; padding: 1rem 1.25rem; margin: 1.25rem 0; border-left: 4px solid; font-size: 0.875rem; }
-  .callout-amber { background: var(--amber-bg); border-color: var(--amber); }
-  .callout-red { background: var(--red-bg); border-color: var(--red); }
-  .callout strong { display: block; margin-bottom: 0.25rem; }
+.callout{border-radius:.5rem;padding:1rem 1.25rem;margin:1.25rem 0;border-left:4px solid;font-size:.875rem}
+.c-amber{background:#fef3c7;border-color:#d97706}
+.c-red{background:#fee2e2;border-color:#dc2626}
+.callout strong{display:block;margin-bottom:.25rem}
 
-  /* FOOTER */
-  footer { background: var(--navy); color: #64748b; text-align: center; padding: 1.5rem; font-size: 0.78rem; margin-top: 3rem; }
+footer{background:#1a2744;color:#64748b;text-align:center;padding:1.5rem;font-size:.78rem;margin-top:3rem}
 </style>
 </head>
 <body>
 
-<header class="site-header">
-  <div class="brand"><a href="index.html">&#9878; CHIP Research</a></div>
+<header>
+  <span class="brand">&#9878;&nbsp; CHIP Research Project</span>
   <a href="https://github.com" target="_blank" class="gh">GitHub</a>
 </header>
 
@@ -97,153 +69,151 @@
   <h1>CHIP Research Project</h1>
   <p>Scholarly documents, manuscript drafts, and research planning materials for a clinical research program in clonal hematopoiesis of indeterminate potential (CHIP), cardiovascular risk, and the inflammaging phenotype in the rural agricultural population of the Guthrie catchment area.</p>
   <div class="tags">
-    <span class="tag tag-blue">Internal Medicine</span>
-    <span class="tag tag-teal">Hematology</span>
-    <span class="tag tag-amber">Rural Health</span>
-    <span class="tag tag-gray">Pre-Submission</span>
+    <span class="tag t-blue">Internal Medicine</span>
+    <span class="tag t-teal">Hematology</span>
+    <span class="tag t-amber">Rural Health</span>
+    <span class="tag t-gray">Pre-Submission</span>
   </div>
 </div>
 
-<div class="stats-bar">
+<div class="stats">
   <div class="stat"><div class="n">2</div><div class="lbl">Review Articles</div></div>
   <div class="stat"><div class="n">2</div><div class="lbl">Submission Drafts</div></div>
   <div class="stat"><div class="n">2</div><div class="lbl">Research Phases</div></div>
-  <div class="stat"><div class="n">1</div><div class="lbl">Active RCT (NCT06691217)</div></div>
+  <div class="stat"><div class="n">1</div><div class="lbl">Active RCT</div></div>
 </div>
 
-<main class="page-wrap">
+<main class="wrap">
 
   <p class="section-label">Institutional Documents</p>
-  <div class="doc-grid">
-
-    <div class="doc-card">
+  <div class="grid">
+    <div class="card">
       <a href="docs/department_chair_proposal_May2026.docx">
-        <div class="card-num">Document 01</div>
-        <div class="card-title">Department Chair Proposal</div>
-        <div class="card-subtitle">Leave-behind for Dr. Sheela Prabhu, MD &middot; Department of Internal Medicine, Robert Packer Hospital. Proposes outpatient IM employment and Phase 1 research program.</div>
-        <div class="card-tags"><span class="status status-final">Final</span><span class="tag tag-gray" style="margin-left:0.25rem;">Institutional</span></div>
+        <div class="num">Document 01</div>
+        <div class="title">Department Chair Proposal</div>
+        <div class="sub">Leave-behind for Dr. Sheela Prabhu, MD &middot; Department of Internal Medicine, Robert Packer Hospital. Proposes outpatient IM employment and Phase 1 research program.</div>
+        <div class="ctags"><span class="status t-green">Final</span>&nbsp;<span class="tag t-gray">Institutional</span></div>
       </a>
     </div>
-
   </div>
 
   <p class="section-label">Manuscript Drafts</p>
-  <div class="doc-grid">
+  <div class="grid">
 
-    <div class="doc-card">
+    <div class="card">
       <a href="docs/aging_stem_cells_CSC_2026.docx">
-        <div class="card-num">Document 02</div>
-        <div class="card-title">Aging, Stem Cells, and the Cancer Stem Cell Paradigm</div>
-        <div class="card-subtitle">Standalone 2026 review. 17 sections, ~9,500 words. Covers hallmarks of aging, inflammaging, CHIP, senolytics, epigenetic reprogramming, and CSC plasticity.</div>
-        <div class="card-tags"><span class="status status-draft">Draft</span><span class="tag tag-blue" style="margin-left:0.25rem;">Review Article</span></div>
+        <div class="num">Document 02</div>
+        <div class="title">Aging, Stem Cells, and the Cancer Stem Cell Paradigm</div>
+        <div class="sub">Standalone 2026 review. 17 sections, ~9,500 words. Covers hallmarks of aging, inflammaging, CHIP, senolytics, epigenetic reprogramming, and CSC plasticity.</div>
+        <div class="ctags"><span class="status t-amber">Draft</span>&nbsp;<span class="tag t-blue">Review Article</span></div>
       </a>
     </div>
 
-    <div class="doc-card">
+    <div class="card">
       <a href="docs/CHIP_cardiovascular_review_BloodAdvances_2026.docx">
-        <div class="card-num">Document 03</div>
-        <div class="card-title">CHIP and Cardiovascular Risk: Clinical Implications for the Internist</div>
-        <div class="card-subtitle">Blood Advances target. ~6,200 words, 32 references. Gene-specific risk, clinical management framework, evolving evidence and remaining knowledge gaps.</div>
-        <div class="card-tags"><span class="status status-draft">Draft</span><span class="tag tag-teal" style="margin-left:0.25rem;">Blood Advances</span></div>
+        <div class="num">Document 03</div>
+        <div class="title">CHIP and Cardiovascular Risk: Clinical Implications for the Internist</div>
+        <div class="sub">Blood Advances target. ~6,200 words, 32 references. Gene-specific risk, clinical management framework, evolving evidence and knowledge gaps.</div>
+        <div class="ctags"><span class="status t-amber">Draft</span>&nbsp;<span class="tag t-teal">Blood Advances</span></div>
       </a>
     </div>
 
-    <div class="doc-card">
+    <div class="card">
       <a href="docs/CHIP_JRH_commentary_draft.docx">
-        <div class="card-num">Document 04</div>
-        <div class="card-title">An Unrecognized Cardiovascular Risk in Rural Agricultural Communities</div>
-        <div class="card-subtitle">Journal of Rural Health Commentary. ~1,050 words, 15 references. Two-tier flagging methodology, inflammaging composite, rural health equity argument. No IRB required.</div>
-        <div class="card-tags"><span class="status status-draft">Ready to Submit</span><span class="tag tag-amber" style="margin-left:0.25rem;">JRH</span></div>
+        <div class="num">Document 04</div>
+        <div class="title">An Unrecognized Cardiovascular Risk in Rural Agricultural Communities</div>
+        <div class="sub">Journal of Rural Health Commentary. ~1,050 words, 15 references. Two-tier flagging methodology, inflammaging composite, rural health equity argument. No IRB required.</div>
+        <div class="ctags"><span class="status t-green">Ready to Submit</span>&nbsp;<span class="tag t-amber">JRH</span></div>
       </a>
     </div>
 
-    <div class="doc-card">
+    <div class="card">
       <a href="docs/CHIP_rural_research_letter_draft.docx">
-        <div class="card-num">Document 05</div>
-        <div class="card-title">CHIP and Cardiovascular Risk in Rural Agricultural Populations: An Uncharacterized Care Gap</div>
-        <div class="card-subtitle">Blood Advances Research Letter format. Two-tier flagging design, inflammaging composite, agricultural chemical exposure rationale. Requires IRB approval and Phase 1 data before submission.</div>
-        <div class="card-tags"><span class="status status-draft">Pre-Data Draft</span><span class="tag tag-teal" style="margin-left:0.25rem;">Blood Advances</span></div>
+        <div class="num">Document 05</div>
+        <div class="title">CHIP and Cardiovascular Risk in Rural Agricultural Populations: An Uncharacterized Care Gap</div>
+        <div class="sub">Blood Advances Research Letter format. Two-tier flagging design, inflammaging composite, agricultural chemical exposure rationale. Requires IRB approval and Phase 1 data before submission.</div>
+        <div class="ctags"><span class="status t-amber">Pre-Data Draft</span>&nbsp;<span class="tag t-teal">Blood Advances</span></div>
       </a>
     </div>
 
   </div>
 
   <p class="section-label">Reference Documents</p>
-  <div class="doc-grid">
+  <div class="grid">
 
-    <div class="doc-card">
+    <div class="card">
       <a href="docs/CHIP_reading_list_2026.docx">
-        <div class="card-num">Document 06</div>
-        <div class="card-title">Annotated Reading List</div>
-        <div class="card-subtitle">32 annotated entries across 8 thematic sections. Companion to Blood Advances manuscript. Each entry includes full citation and contribution annotation.</div>
-        <div class="card-tags"><span class="status status-final">Current</span><span class="tag tag-gray" style="margin-left:0.25rem;">Reference</span></div>
+        <div class="num">Document 06</div>
+        <div class="title">Annotated Reading List</div>
+        <div class="sub">32 annotated entries across 8 thematic sections. Companion to Blood Advances manuscript. Each entry includes full citation and contribution annotation.</div>
+        <div class="ctags"><span class="status t-green">Current</span>&nbsp;<span class="tag t-gray">Reference</span></div>
       </a>
     </div>
 
-    <div class="doc-card">
+    <div class="card">
       <a href="docs/master_verified_bibliography_2026.docx">
-        <div class="card-num">Document 07</div>
-        <div class="card-title">Master Verified Bibliography</div>
-        <div class="card-subtitle">All project citations with verification status. Teal = verified URL. Amber = corrected from fabricated original. Red = requires independent PubMed verification before use.</div>
-        <div class="card-tags"><span class="status status-draft">Verify Red Entries</span><span class="tag tag-gray" style="margin-left:0.25rem;">Reference</span></div>
+        <div class="num">Document 07</div>
+        <div class="title">Master Verified Bibliography</div>
+        <div class="sub">All project citations with verification status. Teal = verified URL. Amber = corrected from fabricated original. Red = requires independent PubMed verification before use in any submitted manuscript.</div>
+        <div class="ctags"><span class="status t-red">Verify Red Entries</span>&nbsp;<span class="tag t-gray">Reference</span></div>
       </a>
     </div>
 
-    <div class="doc-card">
+    <div class="card">
       <a href="docs/session_summary_CHIP_research_May2026.docx">
-        <div class="card-num">Document 08</div>
-        <div class="card-title">Session Summary and Project Record</div>
-        <div class="card-subtitle">Complete record of project development including CHIP clinical framework, research design, institutional strategy, publication sequence, and all output files.</div>
-        <div class="card-tags"><span class="status status-final">Current</span><span class="tag tag-gray" style="margin-left:0.25rem;">Reference</span></div>
+        <div class="num">Document 08</div>
+        <div class="title">Session Summary and Project Record</div>
+        <div class="sub">Complete record of project development including CHIP clinical framework, research design, institutional strategy, publication sequence, and all output files.</div>
+        <div class="ctags"><span class="status t-green">Current</span>&nbsp;<span class="tag t-gray">Reference</span></div>
       </a>
     </div>
 
   </div>
 
   <p class="section-label">Teaching</p>
-  <div class="doc-grid">
+  <div class="grid">
 
-    <div class="doc-card">
+    <div class="card">
       <a href="https://comstocd.github.io/presentations/cases/18-thymopoiesis.html" target="_blank">
-        <div class="card-num">Document 09</div>
-        <div class="card-title">Intrathymic Thymopoiesis and T Cell Development</div>
-        <div class="card-subtitle">Morning Report Topic 18. Beta-selection, V(D)J recombination, positive/negative selection, AIRE, lineage commitment, thymic involution, and connection to CHIP and inflammaging.</div>
-        <div class="card-tags"><span class="status status-live">Live</span><span class="tag tag-blue" style="margin-left:0.25rem;">Morning Report</span></div>
+        <div class="num">Document 09</div>
+        <div class="title">Intrathymic Thymopoiesis and T Cell Development</div>
+        <div class="sub">Morning Report Topic 18. Beta-selection, V(D)J recombination, positive/negative selection, AIRE, lineage commitment, thymic involution, and connection to CHIP and inflammaging.</div>
+        <div class="ctags"><span class="status t-blue">Live &rarr;</span>&nbsp;<span class="tag t-gray">Morning Report</span></div>
       </a>
     </div>
 
   </div>
 
-  <p class="section-label">Research Design Summary</p>
+  <p class="section-label">Research Design</p>
 
-  <table class="info-table">
+  <table class="tbl">
     <thead>
       <tr><th>Phase</th><th>Design</th><th>Primary Outcome</th><th>Cost</th><th>Status</th></tr>
     </thead>
     <tbody>
       <tr>
         <td><strong>Phase 1</strong></td>
-        <td>Retrospective LIS query &middot; Two-tier CBC flagging &middot; Age ≥65 &middot; Stratified 65-69 vs ≥70</td>
+        <td>Retrospective LIS query &middot; Two-tier CBC flagging &middot; Age &ge;65 &middot; Stratified 65&ndash;69 vs &ge;70</td>
         <td>Care gap proportion by tier and age stratum</td>
         <td>Near zero</td>
-        <td>Pending IRB &middot; LIS feasibility query needed</td>
+        <td>Pending IRB &middot; Feasibility query needed</td>
       </tr>
       <tr>
         <td><strong>Phase 2</strong></td>
-        <td>Prospective NGS enrollment of Phase 1-flagged patients &middot; 20-30 patients Year 1</td>
+        <td>Prospective NGS enrollment of Phase 1-flagged patients &middot; 20&ndash;30 patients Year 1</td>
         <td>CHIP/CCUS prevalence vs. urban biobank rates &middot; Inflammaging composite validation</td>
-        <td>$6,000-18,000</td>
+        <td>$6,000&ndash;18,000</td>
         <td>Pending Phase 1 data and small grant</td>
       </tr>
     </tbody>
   </table>
 
-  <div class="callout callout-amber">
+  <div class="callout c-amber">
     <strong>Bibliography Verification Warning</strong>
-    The master verified bibliography contains citations with red flags requiring independent PubMed verification. Do not use any red-flagged citation in a submitted manuscript without confirming the PMID and URL directly at pubmed.ncbi.nlm.nih.gov.
+    The master verified bibliography contains red-flagged entries requiring independent PubMed verification. Do not use any red-flagged citation in a submitted manuscript without confirming the PMID and URL directly at pubmed.ncbi.nlm.nih.gov.
   </div>
 
-  <div class="callout callout-red">
+  <div class="callout c-red">
     <strong>Pre-Submission Status</strong>
     All manuscript drafts are working documents. No manuscript has been submitted. IRB approval is pending for Phase 1 data collection. No patient data is contained in this repository.
   </div>
