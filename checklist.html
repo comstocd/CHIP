@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>CHIP Research — Action Checklist</title>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;font-size:15px;line-height:1.65;color:#1e293b;background:#f8fafc}
+
+header{background:#1a2744;padding:.75rem 1.5rem;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;box-shadow:0 2px 8px rgba(0,0,0,.15)}
+header .brand a{color:#93c5fd;font-weight:700;font-size:.95rem;text-decoration:none}
+header .back{color:#94a3b8;font-size:.8rem;text-decoration:none;transition:color .15s}
+header .back:hover{color:#fff}
+
+.hero{background:#1a2744;color:#fff;padding:2rem 1.5rem 1.75rem}
+.hero .meta{font-size:.75rem;color:#93c5fd;text-transform:uppercase;letter-spacing:.08em;font-weight:600;margin-bottom:.5rem}
+.hero h1{font-size:1.5rem;font-weight:700;margin-bottom:.5rem}
+.hero p{color:#bfdbfe;font-size:.875rem}
+
+.wrap{max-width:760px;margin:0 auto;padding:2rem 1.5rem}
+.section-label{font-size:.72rem;text-transform:uppercase;letter-spacing:.08em;color:#64748b;margin:2rem 0 .75rem;border-top:1px solid #e2e8f0;padding-top:1rem;font-weight:600}
+
+.checklist{list-style:none;display:flex;flex-direction:column;gap:.5rem}
+.checklist li{background:#fff;border:1px solid #e2e8f0;border-radius:.5rem;padding:.875rem 1rem;display:flex;align-items:flex-start;gap:.875rem;cursor:pointer;transition:background .15s}
+.checklist li:hover{background:#f0f9ff}
+.checklist li.done{opacity:.55}
+.checklist li.done .item-text{text-decoration:line-through;color:#94a3b8}
+
+.cb{width:20px;height:20px;min-width:20px;border-radius:4px;border:2px solid #cbd5e1;display:flex;align-items:center;justify-content:center;margin-top:1px;transition:all .15s}
+.cb svg{display:none;width:12px;height:12px}
+li.done .cb{background:#2563eb;border-color:#2563eb}
+li.done .cb svg{display:block}
+
+.item-text{flex:1}
+.item-title{font-weight:600;color:#1a2744;font-size:.9rem}
+.item-sub{font-size:.78rem;color:#64748b;margin-top:.2rem}
+
+.badge{display:inline-block;padding:.15rem .5rem;border-radius:9999px;font-size:.68rem;font-weight:600;margin-left:.5rem;vertical-align:middle}
+.b-red{background:#fee2e2;color:#b91c1c}
+.b-amber{background:#fef3c7;color:#b45309}
+.b-blue{background:#dbeafe;color:#1d4ed8}
+.b-green{background:#dcfce7;color:#166534}
+
+.progress-bar{background:#e2e8f0;border-radius:9999px;height:8px;margin:1.5rem 0 .5rem;overflow:hidden}
+.progress-fill{background:#2563eb;height:100%;border-radius:9999px;transition:width .3s}
+.progress-label{font-size:.75rem;color:#64748b;margin-bottom:1.5rem}
+
+footer{background:#1a2744;color:#64748b;text-align:center;padding:1.25rem;font-size:.75rem;margin-top:3rem}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="brand"><a href="index.html">&#9878;&nbsp; CHIP Research</a></div>
+  <a href="index.html" class="back">&larr; Back</a>
+</header>
+
+<div class="hero">
+  <div class="meta">David Comstock, MD &middot; May 2026</div>
+  <h1>Action Checklist</h1>
+  <p>Outstanding tasks organized by priority and deadline. Click any item to mark complete.</p>
+</div>
+
+<div class="wrap">
+
+  <div class="progress-bar"><div class="progress-fill" id="progressFill" style="width:0%"></div></div>
+  <div class="progress-label" id="progressLabel">0 of 10 complete</div>
+
+  <p class="section-label">Immediate &mdash; This Week</p>
+  <ul class="checklist" id="list">
+
+    <li onclick="toggle(this)">
+      <div class="cb"><svg viewBox="0 0 12 12" fill="none"><polyline points="2,6 5,9 10,3" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      <div class="item-text">
+        <div class="item-title">WhatsApp to advisor <span class="badge b-red">Urgent</span></div>
+        <div class="item-sub">Get green light before approaching Dr. Prabhu. Draft is ready.</div>
+      </div>
+    </li>
+
+    <li onclick="toggle(this)">
+      <div class="cb"><svg viewBox="0 0 12 12" fill="none"><polyline points="2,6 5,9 10,3" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      <div class="item-text">
+        <div class="item-title">Approach Dr. Aroshidze directly <span class="badge b-red">Urgent</span></div>
+        <div class="item-sub">Co-investigator conversation while still on hematology rotation. Ask directly; do not involve hematology department leadership.</div>
+      </div>
+    </li>
+
+    <li onclick="toggle(this)">
+      <div class="cb"><svg viewBox="0 0 12 12" fill="none"><polyline points="2,6 5,9 10,3" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      <div class="item-text">
+        <div class="item-title">LIS feasibility query &mdash; contact laboratory director <span class="badge b-red">Urgent</span></div>
+        <div class="item-sub">Aggregate count only, no patient identifiers. Required before June 1 for PAMED abstract data. Facilitated by Dr. Aroshidze or Dr. Prabhu.</div>
+      </div>
+    </li>
+
+    <li onclick="toggle(this)">
+      <div class="cb"><svg viewBox="0 0 12 12" fill="none"><polyline points="2,6 5,9 10,3" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      <div class="item-text">
+        <div class="item-title">Schedule meeting with Dr. Prabhu <span class="badge b-amber">This week</span></div>
+        <div class="item-sub">After advisor gives green light. Proposal document is final and ready to print.</div>
+      </div>
+    </li>
+
+  </ul>
+
+  <p class="section-label">Hard Deadlines</p>
+  <ul class="checklist">
+
+    <li onclick="toggle(this)">
+      <div class="cb"><svg viewBox="0 0 12 12" fill="none"><polyline points="2,6 5,9 10,3" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      <div class="item-text">
+        <div class="item-title">JRH Commentary &mdash; submit <span class="badge b-green">Ready Now</span></div>
+        <div class="item-sub">No IRB required. No data required. Document is complete. Journal of Rural Health online submission system.</div>
+      </div>
+    </li>
+
+    <li onclick="toggle(this)">
+      <div class="cb"><svg viewBox="0 0 12 12" fill="none"><polyline points="2,6 5,9 10,3" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      <div class="item-text">
+        <div class="item-title">PAMED abstract &mdash; submit by June 12 <span class="badge b-red">June 12</span></div>
+        <div class="item-sub">Requires LIS feasibility query data. Data needed by June 1. Presentation at HOD, Hershey PA, October 23&ndash;25, 2026.</div>
+      </div>
+    </li>
+
+  </ul>
+
+  <p class="section-label">Post-Meeting with Dr. Prabhu</p>
+  <ul class="checklist">
+
+    <li onclick="toggle(this)">
+      <div class="cb"><svg viewBox="0 0 12 12" fill="none"><polyline points="2,6 5,9 10,3" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      <div class="item-text">
+        <div class="item-title">Research office consultation <span class="badge b-blue">Post-meeting</span></div>
+        <div class="item-sub">IRB pathway, REDCap infrastructure, LIS data access agreements. Facilitated by Dr. Prabhu.</div>
+      </div>
+    </li>
+
+    <li onclick="toggle(this)">
+      <div class="cb"><svg viewBox="0 0 12 12" fill="none"><polyline points="2,6 5,9 10,3" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      <div class="item-text">
+        <div class="item-title">IRB application &mdash; Phase 1 <span class="badge b-blue">Post-meeting</span></div>
+        <div class="item-sub">Minimal risk retrospective chart review. Target: submit within 60 days of employment start.</div>
+      </div>
+    </li>
+
+  </ul>
+
+  <p class="section-label">Repository and Documents</p>
+  <ul class="checklist">
+
+    <li onclick="toggle(this)">
+      <div class="cb"><svg viewBox="0 0 12 12" fill="none"><polyline points="2,6 5,9 10,3" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      <div class="item-text">
+        <div class="item-title">Upload updated DOCX files to GitHub <span class="badge b-amber">Pending</span></div>
+        <div class="item-sub">Replace all files in docs/ folder with current versions following citation corrections.</div>
+      </div>
+    </li>
+
+    <li onclick="toggle(this)">
+      <div class="cb"><svg viewBox="0 0 12 12" fill="none"><polyline points="2,6 5,9 10,3" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      <div class="item-text">
+        <div class="item-title">Verify Patel 2024 and Libby 2025 URLs in bibliography <span class="badge b-amber">Pending</span></div>
+        <div class="item-sub">Current URLs are placeholder search links, not direct citation URLs. Confirm via PubMed before use in any submitted manuscript.</div>
+      </div>
+    </li>
+
+  </ul>
+
+</div>
+
+<footer>
+  CHIP Research Project &middot; David Comstock, MD &middot; Guthrie Lourdes Hospital &middot; May 2026
+</footer>
+
+<script>
+  function toggle(el) {
+    el.classList.toggle('done');
+    updateProgress();
+  }
+
+  function updateProgress() {
+    const all = document.querySelectorAll('.checklist li');
+    const done = document.querySelectorAll('.checklist li.done');
+    const pct = Math.round((done.length / all.length) * 100);
+    document.getElementById('progressFill').style.width = pct + '%';
+    document.getElementById('progressLabel').textContent = done.length + ' of ' + all.length + ' complete';
+  }
+
+  updateProgress();
+</script>
+
+</body>
+</html>
