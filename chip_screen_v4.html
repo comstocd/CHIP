@@ -1,0 +1,781 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="CHIP Screen">
+<meta name="mobile-web-app-capable" content="yes">
+<title>CHIP Screening Protocol: Unexplained Macrocytosis</title>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;font-size:15px;line-height:1.65;color:#1e293b;background:#f8fafc;min-height:100vh}
+
+header{background:#1a2744;padding:.75rem 1.5rem;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;box-shadow:0 2px 8px rgba(0,0,0,.15)}
+header .brand a{color:#93c5fd;font-weight:700;font-size:.95rem;text-decoration:none}
+header .back{color:#94a3b8;font-size:.8rem;text-decoration:none}
+header .back:hover{color:#fff}
+
+.hero{background:#1a2744;color:#fff;padding:1.75rem 1.5rem 1.5rem}
+.hero .meta{font-size:.72rem;color:#93c5fd;text-transform:uppercase;letter-spacing:.08em;font-weight:600;margin-bottom:.4rem}
+.hero h1{font-size:1.4rem;font-weight:700;margin-bottom:.4rem}
+.hero p{color:#bfdbfe;font-size:.85rem}
+
+.wrap{max-width:780px;margin:0 auto;padding:1.5rem}
+
+/* STEP INDICATOR */
+.steps{display:flex;gap:0;margin-bottom:1.75rem;background:#fff;border:1px solid #e2e8f0;border-radius:.625rem;overflow:hidden}
+.step-ind{flex:1;padding:.6rem .5rem;text-align:center;font-size:.7rem;font-weight:600;color:#94a3b8;border-right:1px solid #e2e8f0;cursor:default;transition:all .2s}
+.step-ind:last-child{border-right:none}
+.step-ind.active{background:#2563eb;color:#fff}
+.step-ind.done{background:#dcfce7;color:#166534}
+.step-ind .sn{font-size:.65rem;display:block;opacity:.7}
+
+/* CARD */
+.card{background:#fff;border:1px solid #e2e8f0;border-radius:.75rem;padding:1.5rem;margin-bottom:1.25rem;box-shadow:0 1px 4px rgba(0,0,0,.05)}
+.card h2{font-size:1.05rem;font-weight:700;color:#1a2744;margin-bottom:.25rem}
+.card .subtitle{font-size:.8rem;color:#64748b;margin-bottom:1.25rem}
+
+/* FORM ELEMENTS */
+.field-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:.875rem;margin-bottom:1rem}
+.field{display:flex;flex-direction:column;gap:.3rem}
+.field label{font-size:.78rem;font-weight:600;color:#475569}
+.field .ref{font-size:.68rem;color:#94a3b8;font-style:italic}
+.field input[type=number],.field input[type=text],.field select{border:1px solid #cbd5e1;border-radius:.375rem;padding:.45rem .65rem;font-size:.875rem;color:#1e293b;width:100%;transition:border-color .15s}
+.field input:focus,.field select:focus{outline:none;border-color:#2563eb;box-shadow:0 0 0 3px rgba(37,99,235,.1)}
+.field input.flagged{border-color:#dc2626;background:#fef2f2}
+.field input.normal{border-color:#16a34a;background:#f0fdf4}
+
+.check-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:.5rem;margin-bottom:1rem}
+.check-item{display:flex;align-items:center;gap:.5rem;font-size:.82rem;cursor:pointer}
+.check-item input[type=checkbox]{width:16px;height:16px;accent-color:#2563eb;cursor:pointer}
+
+/* RADIO GROUP */
+.radio-group{display:flex;gap:.75rem;flex-wrap:wrap;margin-bottom:.5rem}
+.radio-btn{display:flex;align-items:center;gap:.4rem;font-size:.85rem;cursor:pointer;padding:.4rem .75rem;border:1px solid #cbd5e1;border-radius:.375rem;transition:all .15s}
+.radio-btn:hover{border-color:#2563eb;background:#eff6ff}
+.radio-btn input{accent-color:#2563eb}
+
+/* CALLOUTS */
+.callout{border-radius:.5rem;padding:.875rem 1rem;margin:1rem 0;border-left:4px solid;font-size:.85rem}
+.c-blue{background:#eff6ff;border-color:#2563eb}
+.c-amber{background:#fef3c7;border-color:#d97706}
+.c-red{background:#fee2e2;border-color:#dc2626}
+.c-green{background:#f0fdf4;border-color:#16a34a}
+.c-teal{background:#f0fdfa;border-color:#0d9488}
+.c-purple{background:#faf5ff;border-color:#7c3aed}
+.callout strong{display:block;margin-bottom:.2rem;font-size:.85rem}
+
+/* RESULT TABLE */
+.result-table{width:100%;border-collapse:collapse;font-size:.82rem;margin:1rem 0}
+.result-table th{background:#1a2744;color:#fff;padding:.5rem .875rem;text-align:left;font-size:.75rem}
+.result-table td{padding:.45rem .875rem;border-bottom:1px solid #e2e8f0;vertical-align:top}
+.result-table tr:last-child td{border-bottom:none}
+.result-table tr:nth-child(even) td{background:#f8fafc}
+.result-table .flag{color:#dc2626;font-weight:700}
+.result-table .ok{color:#16a34a;font-weight:600}
+.result-table .warn{color:#d97706;font-weight:600}
+
+/* BUTTONS */
+.btn-row{display:flex;gap:.75rem;margin-top:1.25rem;flex-wrap:wrap}
+.btn{padding:.55rem 1.25rem;border-radius:.375rem;border:none;font-size:.875rem;font-weight:600;cursor:pointer;transition:all .15s}
+.btn-primary{background:#2563eb;color:#fff}
+.btn-primary:hover{background:#1d4ed8}
+.btn-secondary{background:#f1f5f9;color:#475569;border:1px solid #cbd5e1}
+.btn-secondary:hover{background:#e2e8f0}
+.btn-danger{background:#dc2626;color:#fff}
+
+/* RISK BADGE */
+.risk-badge{display:inline-block;padding:.3rem .875rem;border-radius:9999px;font-size:.8rem;font-weight:700;margin:.25rem 0}
+.risk-low{background:#dcfce7;color:#166534}
+.risk-mod{background:#fef3c7;color:#b45309}
+.risk-high{background:#fee2e2;color:#b91c1c}
+.risk-urgent{background:#7c3aed;color:#fff}
+
+/* SECTION DIVIDER */
+.divider{border:none;border-top:1px solid #e2e8f0;margin:1.25rem 0}
+
+.hidden{display:none}
+
+/* PRINT */
+@media print{
+  header,.btn-row,.steps{display:none}
+  .card{box-shadow:none;border:1px solid #ccc;break-inside:avoid}
+  body{background:#fff}
+}
+
+footer{background:#1a2744;color:#64748b;text-align:center;padding:1.25rem;font-size:.75rem;margin-top:2rem}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="brand"><a href="index.html">&#9878;&nbsp; CHIP Research</a></div>
+  <a href="index.html" class="back">&larr; Back</a>
+</header>
+
+<div class="hero">
+  <div class="meta">CHIP Screening Protocol &middot; David Comstock, MD</div>
+  <h1>Unexplained Macrocytosis Workup</h1>
+  <p>Stepwise clinical decision support for patients aged &ge;65 with MCV elevation. Enter lab values at each step to receive real-time recommendations.</p>
+</div>
+
+<div class="wrap">
+
+  <!-- STEP INDICATOR -->
+  <div class="steps">
+    <div class="step-ind active" id="si1"><span class="sn">Step 1</span>Patient</div>
+    <div class="step-ind" id="si2"><span class="sn">Step 2</span>Initial Labs</div>
+    <div class="step-ind" id="si3"><span class="sn">Step 3</span>Reversible Causes</div>
+    <div class="step-ind" id="si4"><span class="sn">Step 4</span>Inflammaging</div>
+    <div class="step-ind" id="si5"><span class="sn">Step 5</span>NGS / Tier</div>
+    <div class="step-ind" id="si6"><span class="sn">Step 6</span>Result</div>
+  </div>
+
+  <!-- ══ STEP 1: PATIENT ══ -->
+  <div id="step1">
+    <div class="card">
+      <h2>Step 1 &mdash; Patient Demographics</h2>
+      <div class="subtitle">Confirm eligibility and establish reference ranges</div>
+      <div class="field-grid">
+        <div class="field">
+          <label>Patient Age</label>
+          <input type="number" id="age" min="18" max="120" placeholder="e.g. 68">
+          <span class="ref">Protocol: age &ge;65</span>
+        </div>
+        <div class="field">
+          <label>Biological Sex</label>
+          <select id="sex">
+            <option value="">Select...</option>
+            <option value="F">Female</option>
+            <option value="M">Male</option>
+          </select>
+          <span class="ref">Sets Hgb threshold (F: &lt;12, M: &lt;13 g/dL)</span>
+        </div>
+      </div>
+      <div class="field" style="margin-bottom:1rem">
+        <label>Agricultural Occupational Exposure</label>
+        <div class="radio-group">
+          <label class="radio-btn"><input type="radio" name="ag" value="yes"> Yes &mdash; current or prior farming</label>
+          <label class="radio-btn"><input type="radio" name="ag" value="no"> No</label>
+          <label class="radio-btn"><input type="radio" name="ag" value="unknown"> Unknown</label>
+        </div>
+      </div>
+      <div class="btn-row">
+        <button class="btn btn-primary" onclick="goStep2()">Next &rarr;</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ STEP 2: INITIAL CBC ══ -->
+  <div id="step2" class="hidden">
+    <div class="card">
+      <h2>Step 2 &mdash; Initial Laboratory Values</h2>
+      <div class="subtitle">CBC with differential, peripheral smear, reticulocyte count</div>
+      <div class="field-grid">
+        <div class="field">
+          <label>MCV (fL)</label>
+          <input type="number" id="mcv" step="0.1" placeholder="e.g. 103">
+          <span class="ref">Tier 1: &gt;100 &nbsp;|&nbsp; Tier 2: 95&ndash;100</span>
+        </div>
+        <div class="field">
+          <label>Hematocrit (%)</label>
+          <input type="number" id="hct" step="0.1" placeholder="e.g. 52.6">
+          <span class="ref">Erythrocytosis: M &gt;52% / F &gt;48%</span>
+        </div>
+        <div class="field">
+          <label>Hemoglobin (g/dL)</label>
+          <input type="number" id="hgb" step="0.1" placeholder="e.g. 11.4">
+          <span class="ref" id="hgbRef">Threshold depends on sex</span>
+        </div>
+        <div class="field">
+          <label>RDW (%)</label>
+          <input type="number" id="rdw" step="0.1" placeholder="e.g. 15.2">
+          <span class="ref">Elevated: &ge;14.5%</span>
+        </div>
+        <div class="field">
+          <label>WBC (x10&sup3;/&micro;L)</label>
+          <input type="number" id="wbc" step="0.1" placeholder="e.g. 5.8">
+          <span class="ref">Normal: 4.5&ndash;11.0</span>
+        </div>
+        <div class="field">
+          <label>Platelets (x10&sup3;/&micro;L)</label>
+          <input type="number" id="plt" step="1" placeholder="e.g. 185">
+          <span class="ref">Low: &lt;150</span>
+        </div>
+        <div class="field">
+          <label>Neutrophil Count (x10&sup3;/&micro;L)</label>
+          <input type="number" id="anc" step="0.1" placeholder="e.g. 3.2">
+          <span class="ref">Low: &lt;1.8</span>
+        </div>
+        <div class="field">
+          <label>Lymphocyte Count (x10&sup3;/&micro;L)</label>
+          <input type="number" id="lymph" step="0.1" placeholder="e.g. 1.8">
+          <span class="ref">NLR = ANC / ALC</span>
+        </div>
+        <div class="field">
+          <label>Reticulocyte Count (%)</label>
+          <input type="number" id="retic" step="0.01" placeholder="e.g. 1.2">
+          <span class="ref">Normal: 0.5&ndash;2.5%</span>
+        </div>
+      </div>
+      <div class="field" style="margin-bottom:1rem">
+        <label>Peripheral Smear Findings</label>
+        <div class="check-grid">
+          <label class="check-item"><input type="checkbox" id="smear_macro"> Round macrocytes</label>
+          <label class="check-item"><input type="checkbox" id="smear_hyper"> Hypersegmented neutrophils</label>
+          <label class="check-item"><input type="checkbox" id="smear_oval"> Oval macrocytes</label>
+          <label class="check-item"><input type="checkbox" id="smear_dysp"> Dysplastic changes</label>
+          <label class="check-item"><input type="checkbox" id="smear_target"> Target cells</label>
+          <label class="check-item"><input type="checkbox" id="smear_normal"> Normal morphology</label>
+        </div>
+      </div>
+      <div class="btn-row">
+        <button class="btn btn-secondary" onclick="goStep(1)">&#8592; Back</button>
+        <button class="btn btn-primary" onclick="goStep3()">Next &rarr;</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ STEP 3: REVERSIBLE CAUSES ══ -->
+  <div id="step3" class="hidden">
+    <div class="card">
+      <h2>Step 3 &mdash; Reversible Cause Exclusion</h2>
+      <div class="subtitle">Rule out common treatable causes before considering CHIP/CCUS</div>
+      <div class="field-grid">
+        <div class="field">
+          <label>Vitamin B12 (pg/mL)</label>
+          <input type="number" id="b12" step="1" placeholder="e.g. 450">
+          <span class="ref">Deficiency: &lt;200 &nbsp;|&nbsp; Borderline: 200&ndash;350 (check MMA)</span>
+        </div>
+        <div class="field">
+          <label>Methylmalonic Acid &mdash; MMA (nmol/L)</label>
+          <input type="number" id="mma" step="1" placeholder="e.g. 180">
+          <span class="ref">Order if B12 200&ndash;350. Elevated: &gt;376 nmol/L = functional B12 deficiency</span>
+        </div>
+        <div class="field">
+          <label>Folate (ng/mL)</label>
+          <input type="number" id="folate" step="0.1" placeholder="e.g. 8.2">
+          <span class="ref">Deficiency: &lt;2.7 ng/mL</span>
+        </div>
+        <div class="field">
+          <label>TSH (mIU/L)</label>
+          <input type="number" id="tsh" step="0.01" placeholder="e.g. 2.1">
+          <span class="ref">Normal: 0.4&ndash;4.0 mIU/L</span>
+        </div>
+        <div class="field">
+          <label>Serum Iron (&micro;g/dL)</label>
+          <input type="number" id="iron" step="1" placeholder="e.g. 85">
+          <span class="ref">Low: &lt;60 &micro;g/dL</span>
+        </div>
+        <div class="field">
+          <label>TIBC (&micro;g/dL)</label>
+          <input type="number" id="tibc" step="1" placeholder="e.g. 310">
+          <span class="ref">Normal: 250&ndash;370 &micro;g/dL</span>
+        </div>
+        <div class="field">
+          <label>Ferritin (ng/mL)</label>
+          <input type="number" id="ferritin" step="1" placeholder="e.g. 180">
+          <span class="ref">Low: &lt;12 (F) / &lt;30 (M) ng/mL</span>
+        </div>
+        <div class="field">
+          <label>ALT (U/L)</label>
+          <input type="number" id="alt" step="1" placeholder="e.g. 28">
+          <span class="ref">Normal: &lt;40 U/L</span>
+        </div>
+        <div class="field">
+          <label>AST (U/L)</label>
+          <input type="number" id="ast" step="1" placeholder="e.g. 24">
+          <span class="ref">Normal: &lt;40 U/L</span>
+        </div>
+        <div class="field">
+          <label>Erythropoietin / EPO (mIU/mL)</label>
+          <input type="number" id="epo" step="0.1" placeholder="e.g. 12.4">
+          <span class="ref">Normal: 3.7&ndash;36 mIU/mL. Low + erythrocytosis = primary (JAK2). High = secondary.</span>
+        </div>
+        <div class="field">
+          <label>Serum Copper (&micro;g/dL)</label>
+          <input type="number" id="copper" step="1" placeholder="e.g. 95">
+          <span class="ref">Deficiency: &lt;70 &micro;g/dL. Consider in malabsorption, post-gastric surgery, excess zinc.</span>
+        </div>
+        <div class="field">
+          <label>Ceruloplasmin (mg/dL)</label>
+          <input type="number" id="ceruloplasmin" step="0.1" placeholder="e.g. 25">
+          <span class="ref">Normal: 20&ndash;35 mg/dL. Low confirms copper deficiency.</span>
+        </div>
+          <input type="number" id="albumin" step="0.1" placeholder="e.g. 3.8">
+          <span class="ref">Low (inflammaging): &lt;3.5 g/dL</span>
+        </div>
+      </div>
+      <hr class="divider">
+      <div style="margin-bottom:1rem">
+        <label style="font-size:.78rem;font-weight:600;color:#475569;display:block;margin-bottom:.5rem">Confounding Medications</label>
+        <div class="check-grid">
+          <label class="check-item"><input type="checkbox" id="med_mtx"> Methotrexate</label>
+          <label class="check-item"><input type="checkbox" id="med_hyu"> Hydroxyurea</label>
+          <label class="check-item"><input type="checkbox" id="med_met"> Metformin</label>
+          <label class="check-item"><input type="checkbox" id="med_aza"> Azathioprine</label>
+          <label class="check-item"><input type="checkbox" id="med_tmp"> TMP-SMX</label>
+          <label class="check-item"><input type="checkbox" id="med_arv"> Antiretrovirals</label>
+          <label class="check-item"><input type="checkbox" id="med_phen"> Phenytoin</label>
+          <label class="check-item"><input type="checkbox" id="med_none"> None of the above</label>
+        </div>
+      </div>
+      <div style="margin-bottom:1rem">
+        <label style="font-size:.78rem;font-weight:600;color:#475569;display:block;margin-bottom:.5rem">Alcohol Use</label>
+        <div class="radio-group">
+          <label class="radio-btn"><input type="radio" name="etoh" value="none"> None</label>
+          <label class="radio-btn"><input type="radio" name="etoh" value="moderate"> Moderate</label>
+          <label class="radio-btn"><input type="radio" name="etoh" value="heavy"> Heavy / &ge;14 drinks/week</label>
+        </div>
+      </div>
+      <div class="btn-row">
+        <button class="btn btn-secondary" onclick="goStep(2)">&#8592; Back</button>
+        <button class="btn btn-primary" onclick="goStep4()">Next &rarr;</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ STEP 4: INFLAMMAGING ══ -->
+  <div id="step4" class="hidden">
+    <div class="card">
+      <h2>Step 4 &mdash; Inflammaging Composite</h2>
+      <div class="subtitle">Add-on markers if reversible causes excluded. Single blood draw.</div>
+      <div class="field-grid">
+        <div class="field">
+          <label>hsCRP (mg/L)</label>
+          <input type="number" id="hscrp" step="0.1" placeholder="e.g. 3.4">
+          <span class="ref">CV risk threshold: &ge;2.0 mg/L</span>
+        </div>
+        <div class="field">
+          <label>LDH (U/L)</label>
+          <input type="number" id="ldh" step="1" placeholder="e.g. 185">
+          <span class="ref">Normal: &lt;250 U/L</span>
+        </div>
+      </div>
+      <div class="callout c-blue" style="margin-top:.5rem">
+        <strong>NLR is calculated automatically</strong>
+        Neutrophil-to-lymphocyte ratio uses values entered in Step 2. NLR &ge;3 suggests systemic inflammation; &ge;5 significant; &ge;10 severe.
+      </div>
+      <div class="btn-row">
+        <button class="btn btn-secondary" onclick="goStep(3)">&#8592; Back</button>
+        <button class="btn btn-primary" onclick="goStep5()">Next &rarr;</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ STEP 5: TIER AND NGS ══ -->
+  <div id="step5" class="hidden">
+    <div class="card">
+      <h2>Step 5 &mdash; Tier Classification and NGS</h2>
+      <div class="subtitle">Tier assessment based on entered values, then NGS result entry</div>
+      <div id="tierResult"></div>
+      <hr class="divider">
+      <h3 style="font-size:.95rem;font-weight:700;color:#1a2744;margin-bottom:.75rem">NGS Result Entry</h3>
+      <div class="field-grid">
+        <div class="field">
+          <label>Driver Mutation Detected</label>
+          <select id="mutation">
+            <option value="none">No mutation detected</option>
+            <option value="DNMT3A">DNMT3A</option>
+            <option value="TET2">TET2</option>
+            <option value="ASXL1">ASXL1</option>
+            <option value="JAK2">JAK2 V617F</option>
+            <option value="TP53">TP53</option>
+            <option value="SF3B1">SF3B1</option>
+            <option value="SRSF2">SRSF2</option>
+            <option value="U2AF1">U2AF1</option>
+            <option value="IDH1">IDH1</option>
+            <option value="IDH2">IDH2</option>
+            <option value="other">Other / Multiple</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>Variant Allele Frequency (VAF %)</label>
+          <input type="number" id="vaf" step="0.1" min="0" max="100" placeholder="e.g. 8.5">
+          <span class="ref">CHIP threshold: &ge;2%</span>
+        </div>
+        <div class="field">
+          <label>Additional Mutations</label>
+          <select id="additionalMut">
+            <option value="none">None</option>
+            <option value="one">1 additional</option>
+            <option value="multiple">2 or more additional</option>
+          </select>
+        </div>
+      </div>
+      <div class="btn-row">
+        <button class="btn btn-secondary" onclick="goStep(4)">&#8592; Back</button>
+        <button class="btn btn-primary" onclick="showResult()">Generate Report &rarr;</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ STEP 6: RESULT ══ -->
+  <div id="step6" class="hidden">
+    <div class="card" id="reportCard">
+      <h2>Clinical Decision Report</h2>
+      <div class="subtitle" id="reportDate"></div>
+      <div id="reportBody"></div>
+      <div class="btn-row" style="margin-top:1.5rem">
+        <button class="btn btn-secondary" onclick="goStep(5)">&#8592; Back</button>
+        <button class="btn btn-primary" onclick="window.print()">&#128438; Print Report</button>
+        <button class="btn btn-secondary" onclick="resetAll()">Start New</button>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<footer>
+  CHIP Research Protocol &middot; David Comstock, MD &middot; Guthrie Lourdes Hospital &middot; For clinical research use &middot; Not a substitute for clinical judgment
+</footer>
+
+<script>
+// ── State ──────────────────────────────────────────────────────────────────
+let state = {};
+
+// ── Navigation ─────────────────────────────────────────────────────────────
+function goStep(n) {
+  for (let i=1;i<=6;i++) {
+    document.getElementById('step'+i).classList.add('hidden');
+    let si = document.getElementById('si'+i);
+    si.classList.remove('active','done');
+  }
+  document.getElementById('step'+n).classList.remove('hidden');
+  document.getElementById('si'+n).classList.add('active');
+  for (let i=1;i<n;i++) document.getElementById('si'+i).classList.add('done');
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function goStep2() {
+  let age = parseInt(v('age'));
+  let sex = v('sex');
+  if (!age || age < 18) { alert('Please enter patient age.'); return; }
+  if (!sex) { alert('Please select biological sex.'); return; }
+  if (age < 65) {
+    if (!confirm('Patient age is ' + age + '. Protocol is designed for age \u226565. Continue anyway?')) return;
+  }
+  state.age = age;
+  state.sex = sex;
+  state.ag = document.querySelector('input[name=ag]:checked')?.value || 'unknown';
+  let ref = sex === 'F' ? '<12.0 g/dL (female threshold)' : '<13.0 g/dL (male threshold)';
+  document.getElementById('hgbRef').textContent = ref;
+  goStep(2);
+}
+
+function goStep3() {
+  let mcv = parseFloat(v('mcv'));
+  let hgb = parseFloat(v('hgb'));
+  if (!mcv || !hgb) { alert('Please enter MCV and hemoglobin values.'); return; }
+  state.mcv = mcv;
+  state.hgb = hgb;
+  state.hct = parseFloat(v('hct')) || null;
+  state.rdw = parseFloat(v('rdw')) || null;
+  state.wbc = parseFloat(v('wbc')) || null;
+  state.plt = parseFloat(v('plt')) || null;
+  state.anc = parseFloat(v('anc')) || null;
+  state.lymph = parseFloat(v('lymph')) || null;
+  state.retic = parseFloat(v('retic')) || null;
+  state.smear_dysp = document.getElementById('smear_dysp').checked;
+  state.smear_hyper = document.getElementById('smear_hyper').checked;
+  state.smear_oval = document.getElementById('smear_oval').checked;
+  goStep(3);
+}
+
+function goStep4() {
+  state.b12 = parseFloat(v('b12')) || null;
+  state.mma = parseFloat(v('mma')) || null;
+  state.epo = parseFloat(v('epo')) || null;
+  state.copper = parseFloat(v('copper')) || null;
+  state.ceruloplasmin = parseFloat(v('ceruloplasmin')) || null;
+  state.folate = parseFloat(v('folate')) || null;
+  state.tsh = parseFloat(v('tsh')) || null;
+  state.iron = parseFloat(v('iron')) || null;
+  state.tibc = parseFloat(v('tibc')) || null;
+  state.ferritin = parseFloat(v('ferritin')) || null;
+  state.alt = parseFloat(v('alt')) || null;
+  state.ast = parseFloat(v('ast')) || null;
+  state.albumin = parseFloat(v('albumin')) || null;
+  state.meds = ['mtx','hyu','met','aza','tmp','arv','phen'].filter(m => document.getElementById('med_'+m).checked);
+  state.etoh = document.querySelector('input[name=etoh]:checked')?.value || 'none';
+  goStep(4);
+}
+
+function goStep5() {
+  state.hscrp = parseFloat(v('hscrp')) || null;
+  state.ldh = parseFloat(v('ldh')) || null;
+  // Calculate NLR
+  if (state.anc && state.lymph && state.lymph > 0) {
+    state.nlr = (state.anc / state.lymph).toFixed(1);
+  }
+  // Determine tier
+  let tier = determineTier();
+  state.tier = tier;
+  document.getElementById('tierResult').innerHTML = renderTier(tier);
+  goStep(5);
+}
+
+function determineTier() {
+  let hgbThresh = state.sex === 'F' ? 12.0 : 13.0;
+  let hctThresh = state.sex === 'F' ? 48.0 : 52.0;
+  let hgbHighThresh = state.sex === 'F' ? 16.5 : 17.5;
+
+  // Erythrocytosis arm: elevated Hct or Hgb with macrocytosis
+  let hasErythrocytosis = (state.hct && state.hct > hctThresh) || (state.hgb > hgbHighThresh);
+  if (hasErythrocytosis && state.mcv >= 95) {
+    return { level: 3, label: 'Erythrocytosis + Macrocytosis', cytopenias: [], reversible: [] };
+  }
+
+  let cytopenias = [];
+  if (state.hgb < hgbThresh) cytopenias.push('Hgb');
+  if (state.plt && state.plt < 150) cytopenias.push('Platelets');
+  if (state.anc && state.anc < 1.8) cytopenias.push('ANC');
+
+  let reversible = detectReversible();
+  let hasCytopenia = cytopenias.length > 0;
+
+  // Primary tier: MCV >100 + cytopenia + no reversible cause
+  if (state.mcv > 100 && hasCytopenia && reversible.length === 0) {
+    return { level: 1, label: 'Primary Tier', cytopenias, reversible };
+  }
+  // Secondary tier A: MCV 95-100 with cytopenia, no reversible cause
+  if (state.mcv >= 95 && state.mcv <= 100 && hasCytopenia && reversible.length === 0) {
+    return { level: 2, label: 'Secondary Tier', cytopenias, reversible };
+  }
+  // Secondary tier B: elevated RDW with borderline MCV
+  if (state.rdw && state.rdw >= 14.5 && state.mcv >= 95 && reversible.length === 0) {
+    return { level: 2, label: 'Secondary Tier (RDW)', cytopenias, reversible };
+  }
+  // Secondary tier C: normocytic unexplained anemia
+  if (state.mcv >= 80 && state.mcv <= 100 && hasCytopenia && reversible.length === 0) {
+    return { level: 2, label: 'Secondary Tier (Normocytic)', cytopenias, reversible };
+  }
+  // Reversible cause found
+  if (reversible.length > 0) {
+    return { level: 0, label: 'Reversible Cause Identified', cytopenias, reversible };
+  }
+  // No cytopenia
+  return { level: -1, label: 'No Cytopenia Threshold Met', cytopenias: [], reversible };
+}
+
+function detectReversible() {
+  let causes = [];
+  // B12: frank deficiency
+  if (state.b12 && state.b12 < 200) {
+    causes.push('B12 deficiency (B12=' + state.b12 + ' pg/mL, below 200 pg/mL threshold)');
+  }
+  // B12: borderline range: flag as pending unless MMA entered
+  if (state.b12 && state.b12 >= 200 && state.b12 <= 350) {
+    if (!state.mma) {
+      causes.push('PENDING: B12 borderline (' + state.b12 + ' pg/mL, 200\u2013350 range). MMA not yet entered. Order MMA to exclude functional B12 deficiency before proceeding to CHIP evaluation.');
+    } else if (state.mma > 376) {
+      causes.push('Functional B12 deficiency confirmed: B12 borderline (' + state.b12 + ' pg/mL) + MMA elevated (' + state.mma + ' nmol/L, normal \u2264376). Treat with B12 supplementation and repeat CBC in 8\u201312 weeks.');
+    }
+    // MMA normal: B12 excluded as cause: do not flag
+  }
+  if (state.folate && state.folate < 2.7) causes.push('Folate deficiency (folate=' + state.folate + ' ng/mL)');
+  if (state.tsh && (state.tsh < 0.4 || state.tsh > 4.0)) causes.push('Thyroid dysfunction (TSH=' + state.tsh + ')');
+  if (state.etoh === 'heavy') causes.push('Heavy alcohol use');
+  if (state.meds.length > 0 && !document.getElementById('med_none').checked) {
+    let medNames = {mtx:'Methotrexate',hyu:'Hydroxyurea',met:'Metformin',aza:'Azathioprine',tmp:'TMP-SMX',arv:'Antiretrovirals',phen:'Phenytoin'};
+    state.meds.forEach(m => causes.push('Causative medication: ' + (medNames[m] || m)));
+  }
+  if (state.alt && state.alt > 80) causes.push('Hepatic disease (ALT=' + state.alt + ')');
+  if (state.ast && state.ast > 80) causes.push('Hepatic disease (AST=' + state.ast + ')');
+  if (state.copper && state.copper < 70) {
+    var copperMsg = 'Copper deficiency (serum copper=' + state.copper + ' mcg/dL, below 70 mcg/dL threshold)';
+    if (state.ceruloplasmin && state.ceruloplasmin < 20) copperMsg += '; confirmed by low ceruloplasmin (' + state.ceruloplasmin + ' mg/dL)';
+    causes.push(copperMsg + '. Evaluate for malabsorption, prior gastric surgery, excessive zinc supplementation. Copper deficiency produces macrocytosis, anemia, and neutropenia and is frequently missed.');
+  }
+  return causes;
+}
+
+function renderTier(tier) {
+  if (tier.level === 3) {
+    return '<div class="callout c-purple"><strong>Erythrocytosis + Macrocytosis: JAK2 Arm</strong>' +
+      '<p>Elevated hematocrit or hemoglobin combined with persistent macrocytosis. This pattern does not fit the CCUS-anemia protocol. Proceed with JAK2 V617F testing and EPO level. Enter NGS results below.</p></div>';
+  }
+  if (tier.level === 0) {
+    return '<div class="callout c-amber"><strong>Reversible Cause(s) Identified</strong>' +
+      '<ul style="padding-left:1.25rem;margin-top:.4rem">' +
+      tier.reversible.map(r => '<li>' + r + '</li>').join('') +
+      '</ul><p style="margin-top:.5rem">Address reversible causes and repeat CBC in 8&ndash;12 weeks. If macrocytosis persists after correction, proceed to NGS assessment.</p></div>';
+  }
+  if (tier.level === -1) {
+    return '<div class="callout c-blue"><strong>No Cytopenia Threshold Met</strong>Macrocytosis present but hemoglobin, ANC, and platelets are within normal range. Monitor with annual CBC. If MCV is trending upward or cytopenias develop, re-evaluate.</div>';
+  }
+  let color = tier.level === 1 ? 'c-red' : 'c-amber';
+  let label = tier.level === 1 ? 'Primary Tier &mdash; CCUS-Pattern' : 'Secondary Tier &mdash; Early/Near-Threshold';
+  return '<div class="callout ' + color + '"><strong>' + label + '</strong>' +
+    '<p>Cytopenias present: <strong>' + (tier.cytopenias.join(', ') || 'None confirmed') + '</strong>. No reversible cause identified.</p>' +
+    '<p style="margin-top:.4rem"><strong>Recommendation:</strong> Proceed with peripheral blood CHIP NGS panel. Enter results below.</p></div>';
+}
+
+function showResult() {
+  state.mutation = v('mutation');
+  state.vaf = parseFloat(v('vaf')) || null;
+  state.additionalMut = v('additionalMut');
+
+  let html = '';
+  let d = new Date();
+  document.getElementById('reportDate').textContent = 'Generated ' + d.toLocaleDateString('en-US', {year:'numeric',month:'long',day:'numeric'}) +
+    ' \u00b7 ' + (state.sex==='F'?'Female':'Male') + ', age ' + state.age;
+
+  // Patient summary table
+  html += '<h3 style="font-size:.9rem;font-weight:700;color:#475569;text-transform:uppercase;letter-spacing:.05em;margin:.75rem 0 .5rem">Lab Summary</h3>';
+  html += '<table class="result-table"><thead><tr><th>Marker</th><th>Value</th><th>Reference</th><th>Status</th></tr></thead><tbody>';
+
+  let hgbThresh = state.sex === 'F' ? 12.0 : 13.0;
+  let rows = [
+    ['MCV', state.mcv + ' fL', '80\u2013100 fL', state.mcv > 100 ? 'flag' : state.mcv >= 95 ? 'warn' : 'ok'],
+    ['Hemoglobin', state.hgb + ' g/dL', (state.sex==='F'?'\u226512.0':'\u226513.0') + ' g/dL', state.hgb < hgbThresh ? 'flag' : 'ok'],
+    ['RDW', state.rdw ? state.rdw + '%' : 'Not entered', '\u226514.5% = elevated', state.rdw >= 14.5 ? 'warn' : 'ok'],
+    ['NLR', state.nlr ? state.nlr : 'Not calculated', '<3 normal', state.nlr >= 5 ? 'flag' : state.nlr >= 3 ? 'warn' : 'ok'],
+    ['Albumin', state.albumin ? state.albumin + ' g/dL' : 'Not entered', '\u22653.5 g/dL', state.albumin && state.albumin < 3.5 ? 'flag' : 'ok'],
+    ['hsCRP', state.hscrp ? state.hscrp + ' mg/L' : 'Not entered', '\u22652.0 mg/L = elevated', state.hscrp >= 2.0 ? 'warn' : 'ok'],
+    ['B12', state.b12 ? state.b12 + ' pg/mL' : 'Not entered', '\u2265200 deficiency / 200\u2013350 borderline', state.b12 && state.b12 < 200 ? 'flag' : state.b12 && state.b12 <= 350 ? 'warn' : 'ok'],
+    ['MMA', state.mma ? state.mma + ' nmol/L' : state.b12 && state.b12 <= 350 ? 'PENDING \u2014 order if not done' : 'Not applicable', '\u2264376 nmol/L normal', state.mma && state.mma > 376 ? 'flag' : !state.mma && state.b12 && state.b12 <= 350 ? 'warn' : 'ok'],
+    ['Folate', state.folate ? state.folate + ' ng/mL' : 'Not entered', '\u22652.7 ng/mL', state.folate && state.folate < 2.7 ? 'flag' : 'ok'],
+    ['TSH', state.tsh ? state.tsh + ' mIU/L' : 'Not entered', '0.4\u20134.0 mIU/L', state.tsh && (state.tsh < 0.4 || state.tsh > 4.0) ? 'flag' : 'ok'],
+    ['Copper', state.copper ? state.copper + ' mcg/dL' : 'Not entered', '70\u2013140 mcg/dL', state.copper && state.copper < 70 ? 'flag' : 'ok'],
+    ['Ceruloplasmin', state.ceruloplasmin ? state.ceruloplasmin + ' mg/dL' : 'Not entered', '20\u201335 mg/dL', state.ceruloplasmin && state.ceruloplasmin < 20 ? 'flag' : 'ok'],
+  ];
+
+  rows.forEach(function(r) {
+    let statusText = r[3] === 'flag' ? '<span class="flag">\u25b2 Abnormal</span>' :
+                     r[3] === 'warn' ? '<span class="warn">\u25b3 Borderline</span>' :
+                     '<span class="ok">\u2713 Normal</span>';
+    html += '<tr><td><strong>' + r[0] + '</strong></td><td>' + r[1] + '</td><td>' + r[2] + '</td><td>' + statusText + '</td></tr>';
+  });
+  html += '</tbody></table>';
+
+  // Tier result
+  html += '<h3 style="font-size:.9rem;font-weight:700;color:#475569;text-transform:uppercase;letter-spacing:.05em;margin:.75rem 0 .5rem">Tier Classification</h3>';
+  let t = state.tier;
+  let tierText = t.level === 1 ? 'Primary Tier: CCUS-Pattern (MCV >100, cytopenia, no reversible cause)' :
+                 t.level === 2 ? 'Secondary Tier: Near-threshold / early presentation' :
+                 t.level === 0 ? 'Reversible cause identified: ' + t.reversible.join('; ') :
+                 'No cytopenia threshold met';
+  let tierColor = t.level === 1 ? 'c-red' : t.level === 2 ? 'c-amber' : 'c-blue';
+  html += '<div class="callout ' + tierColor + '"><strong>' + tierText + '</strong></div>';
+
+  // NGS result and recommendation
+  html += '<h3 style="font-size:.9rem;font-weight:700;color:#475569;text-transform:uppercase;letter-spacing:.05em;margin:.75rem 0 .5rem">NGS Result and Recommendation</h3>';
+
+  var mut = state.mutation;
+  var vaf = state.vaf;
+  var rec = '';
+  var badge = '';
+  var calloutClass = 'c-blue';
+
+  var hasPending = state.tier && state.tier.level === 0 &&
+    state.tier.reversible && state.tier.reversible.some(function(r){ return r.startsWith('PENDING'); });
+
+  if (hasPending && mut === 'none') {
+    badge = '<span class="risk-badge risk-mod">NGS Not Yet Indicated</span>';
+    rec = 'Reversible cause exclusion is incomplete. MMA result is pending. CHIP evaluation cannot begin until functional B12 deficiency has been excluded. ';
+    rec += 'If MMA is elevated: treat with B12 supplementation and repeat CBC in 8-12 weeks. If macrocytosis persists after correction, proceed to CHIP NGS. ';
+    rec += 'If MMA is normal: B12 is excluded as a cause. This patient has persistent macrocytosis with no confirmed reversible cause. A full peripheral blood CHIP NGS panel is indicated at that point regardless of erythrocytosis status. ';
+    rec += 'Pre-test probability for CHIP at age 70 is 10-20% based on published biobank data. No CHIP Detected requires a negative NGS result, not a pending workup. ';
+    rec += '<strong>Order simultaneously: MMA, peripheral blood smear, JAK2 V617F, EPO level.</strong>';
+    calloutClass = 'c-amber';
+    html += '<div class="callout ' + calloutClass + '">' + badge + '<p style="margin-top:.5rem">' + rec + '</p></div>';
+  } else {
+    if (mut === 'none') {
+      if (state.tier && state.tier.level === 3) {
+        badge = '<span class="risk-badge risk-urgent">No JAK2 Detected: Secondary Polycythemia Workup</span>';
+        rec = 'No CHIP driver mutation detected. Erythrocytosis without JAK2 V617F points toward secondary polycythemia. ';
+        if (state.epo && state.epo > 36) rec += 'EPO elevated (' + state.epo + ' mIU/mL): consistent with hypoxia-driven secondary erythrocytosis. Evaluate for obstructive sleep apnea, COPD, renal artery stenosis, or EPO-secreting tumor. ';
+        else if (state.epo && state.epo < 3.7) rec += 'EPO low (' + state.epo + ' mIU/mL) despite erythrocytosis: primary polycythemia pattern despite negative JAK2 V617F. Hematology referral for bone marrow biopsy and JAK2 exon 12, CALR, MPL mutation testing. ';
+        else rec += 'EPO level not entered or within normal range. EPO is essential to distinguish primary from secondary erythrocytosis. ';
+        rec += 'Therapeutic target: maintain hematocrit below 45%. Annual CBC minimum.';
+        calloutClass = 'c-purple';
+      } else {
+        badge = '<span class="risk-badge risk-low">No CHIP Detected</span>';
+        rec = 'No driver mutation identified at VAF 2% or greater. Annual CBC surveillance. If macrocytosis or cytopenia progresses, repeat NGS in 12-18 months. Consider ICUS classification if cytopenias persist without clonal mutation.';
+        calloutClass = 'c-green';
+      }
+    } else if (mut === 'JAK2') {
+      if (state.tier && state.tier.level === 3) {
+        badge = '<span class="risk-badge risk-urgent">JAK2 V617F + Erythrocytosis: MPN Evaluation</span>';
+        rec = 'JAK2 V617F confirmed with erythrocytosis: myeloproliferative neoplasm evaluation required. ';
+        if (state.epo && state.epo < 3.7) rec += 'Low EPO (' + state.epo + ' mIU/mL) confirms endogenous erythroid proliferation consistent with polycythemia vera. ';
+        rec += 'Urgent hematology referral. Bone marrow biopsy, cytogenetics, erythropoietin level if not done. Phlebotomy to hematocrit below 45%. Aspirin 81 mg daily for thrombosis prophylaxis unless contraindicated. Assess for prior thrombotic events.';
+      } else {
+        badge = '<span class="risk-badge risk-urgent">JAK2 V617F: MPN Workup Required</span>';
+        rec = 'JAK2 V617F at any VAF requires myeloproliferative neoplasm evaluation. Erythropoietin level, bone marrow biopsy referral to hematology. Thrombosis-dominant phenotype: assess for prior thrombotic events. Urgent hematology referral.';
+      }
+      calloutClass = 'c-red';
+    } else if (mut === 'DNMT3A') {
+      if (vaf < 10) {
+        badge = '<span class="risk-badge risk-low">CHIP: Lower Risk</span>';
+        rec = 'DNMT3A CHIP, VAF less than 10%. Modest cardiovascular signal. Optimize all cardiovascular risk factors aggressively (LDL, blood pressure, smoking cessation, exercise). Annual CBC. Hematology referral not urgently required unless cytopenias develop or VAF increases significantly on repeat testing.';
+        calloutClass = 'c-teal';
+      } else {
+        badge = '<span class="risk-badge risk-mod">CHIP: Intermediate Risk</span>';
+        rec = 'DNMT3A CHIP, VAF 10% or greater. Cardiovascular risk management priority. Consider hematology referral within 6 months. Annual CBC with differential. hsCRP measurement if not obtained.';
+        calloutClass = 'c-amber';
+      }
+    } else if (mut === 'TET2') {
+      badge = '<span class="risk-badge risk-high">TET2-CHIP: Elevated CV Risk</span>';
+      var crp = state.hscrp;
+      rec = 'TET2-CHIP: strongest cardiovascular signal among CHIP driver genes. NLRP3/IL-1beta pathway hyperactivation drives atherosclerosis and independently associates with HFpEF (HR 2.35 in prospective cohorts). ';
+      if (crp && crp >= 2.0) rec += 'hsCRP 2.0 mg/L or greater confirms active inflammatory phenotype. Colchicine 0.5 mg daily is guideline-supported for CAD and targets the same NLRP3 pathway. ';
+      rec += 'Aggressive cardiovascular risk factor optimization. Hematology referral within 6 months. Annual CBC. Echocardiogram if cardiac symptoms present.';
+      calloutClass = 'c-red';
+    } else if (mut === 'ASXL1') {
+      badge = '<span class="risk-badge risk-high">ASXL1-CHIP: Malignancy-Dominant</span>';
+      rec = 'ASXL1 mutations carry dominant malignancy risk. Expedited hematology referral regardless of VAF. Bone marrow biopsy decision deferred to hematology. Annual CBC at minimum.';
+      calloutClass = 'c-red';
+    } else if (['TP53','SF3B1','SRSF2','U2AF1','IDH1','IDH2'].indexOf(mut) !== -1) {
+      badge = '<span class="risk-badge risk-urgent">High-Risk Mutation: Urgent Referral</span>';
+      rec = mut + ' mutation at any VAF: same-week hematology referral. Splicing factor mutations (SF3B1, SRSF2, U2AF1), TP53, and IDH1/2 carry high rates of progression to MDS or AML. Bone marrow biopsy and cytogenetics to follow.';
+      calloutClass = 'c-red';
+    } else {
+      badge = '<span class="risk-badge risk-mod">CHIP: Hematology Referral Recommended</span>';
+      rec = 'Less common or multiple mutations detected. Hematology referral for expert interpretation and surveillance planning. Cardiovascular risk management regardless of mutation identity.';
+      calloutClass = 'c-amber';
+    }
+
+    if (mut !== 'none' && t.level >= 1) {
+      rec += ' <strong>Note: cytopenia present with clonal mutation = CCUS. 5-year malignancy risk exceeds 10%. Expedited hematology evaluation.</strong>';
+    }
+    if (state.ag === 'yes') {
+      rec += ' Agricultural chemical exposure documented. Occupational exposure to organophosphates and herbicides is associated with hematologic malignancy risk; CHIP in this occupational context is currently uncharacterized in the literature and warrants careful longitudinal surveillance.';
+    }
+    html += '<div class="callout ' + calloutClass + '">' + badge + '<p style="margin-top:.5rem">' + rec + '</p></div>';
+  }
+
+    // Inflammaging summary
+  if (state.nlr || state.hscrp || state.albumin) {
+    html += '<h3 style="font-size:.9rem;font-weight:700;color:#475569;text-transform:uppercase;letter-spacing:.05em;margin:.75rem 0 .5rem">Inflammaging Composite</h3>';
+    let nlrFlag = state.nlr >= 5 ? 'significant systemic inflammation' : state.nlr >= 3 ? 'mild elevation' : 'within normal range';
+    let crpFlag = state.hscrp >= 5 ? 'markedly elevated (acute process possible)' : state.hscrp >= 2 ? 'elevated (chronic inflammaging range)' : 'below cardiovascular risk threshold';
+    let albFlag = state.albumin < 3.5 ? 'low (negative acute phase reactant, suggests chronic inflammation)' : 'normal';
+    html += '<div class="callout c-teal">';
+    if (state.nlr) html += '<p><strong>NLR ' + state.nlr + ':</strong> ' + nlrFlag + '</p>';
+    if (state.hscrp) html += '<p><strong>hsCRP ' + state.hscrp + ' mg/L:</strong> ' + crpFlag + '</p>';
+    if (state.albumin) html += '<p><strong>Albumin ' + state.albumin + ' g/dL:</strong> ' + albFlag + '</p>';
+    html += '</div>';
+  }
+
+  document.getElementById('reportBody').innerHTML = html;
+  goStep(6);
+}
+
+function v(id) { return document.getElementById(id)?.value || ''; }
+
+function resetAll() {
+  state = {};
+  document.querySelectorAll('input[type=number], input[type=text]').forEach(el => el.value = '');
+  document.querySelectorAll('select').forEach(el => el.selectedIndex = 0);
+  document.querySelectorAll('input[type=checkbox]').forEach(el => el.checked = false);
+  document.querySelectorAll('input[type=radio]').forEach(el => el.checked = false);
+  goStep(1);
+}
+</script>
+
+</body>
+</html>
